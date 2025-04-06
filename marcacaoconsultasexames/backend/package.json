@@ -1,0 +1,11 @@
+{
+  "name": "backend-marcacao",
+  "version": "1.0.0",
+  "description": "backend da aplicacao de marcacao de exames e consultas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
