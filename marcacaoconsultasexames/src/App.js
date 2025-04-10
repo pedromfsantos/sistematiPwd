@@ -14,6 +14,8 @@ const UsrSrv = new UsuarioService;
 function App() {
   const [listagem, setListagem] = useState([]);
   const [usuarioEmEdicao, setUsuarioEmEdicao] = useState(false);
+  const [especialidade, setEspecialidade] = useState('');
+  const [medico, setMedico] = useState('');
   
   const carregarUsuarios = () => {
     const lista = UsrSrv.get();
@@ -29,13 +31,15 @@ function App() {
       cidade: ""
     }) 
   }
+
+
   
   return (
     <div className="App">
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Typography variant="h5" component="div">
-            Cadastro de Usuários
+            Agendamento de Consultas e Exames
           </Typography>
           <Paper>
             <Box p={5} mt={2}>
@@ -54,7 +58,8 @@ function App() {
                 <Typography variant="h6" component="div">
                   {usuarioEmEdicao.novo ? "Novo" : "Alterando"} usuário
                 </Typography>
-                <UsuarioForm usuarioEmEdicao={usuarioEmEdicao} carregarUsuarios={carregarUsuarios} setUsuarioEmEdicao={setUsuarioEmEdicao} UsrSrv={UsrSrv}  />
+                <UsuarioForm usuarioEmEdicao={usuarioEmEdicao} carregarUsuarios={carregarUsuarios} setUsuarioEmEdicao={setUsuarioEmEdicao}
+                 UsrSrv={UsrSrv} setEspecialidade={setEspecialidade} especialidade={especialidade} setMedico={setMedico} medico={medico} />
               </Box>
             </Paper>
           </CardContent>

@@ -1,10 +1,19 @@
 import React from "react";
+import dayjs from 'dayjs';
+
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+
+
 
 function UsuarioForm(props) {
-    const { carregarUsuarios, usuarioEmEdicao, UsrSrv, setUsuarioEmEdicao } = props;
+    const { carregarUsuarios, usuarioEmEdicao, UsrSrv, setUsuarioEmEdicao, setEspecialidade, especialidade,  setMedico, medico } = props;
     const salvar = () => {
         if (usuarioEmEdicao.novo){
             delete usuarioEmEdicao.novo;
@@ -15,6 +24,20 @@ function UsuarioForm(props) {
         carregarUsuarios();
         setUsuarioEmEdicao(false)
     }
+
+    const handleChangeEspecialidade = (event) => {
+        setEspecialidade(event.target.value);
+      };
+
+    const handleChangeMedico = (event) => {
+        setMedico(event.target.value);
+      };
+
+      const options = [
+        { label: 'The Godfather', id: 1 },
+        { label: 'Pulp Fiction', id: 2 },
+      ];
+
 
     return (
         usuarioEmEdicao && (
@@ -30,40 +53,44 @@ function UsuarioForm(props) {
                         }}
                         value={usuarioEmEdicao.nome}
                     />
+
                     <TextField 
                         required={true}
                         fullWidth={true}
                         id="outlined-idade" 
-                        label="Idade" 
+                        label="CPF" 
+
                         variant="outlined" 
                         onChange={(event) => {
                             setUsuarioEmEdicao({...usuarioEmEdicao,idade:event.target.value});
                         }}
                         value={usuarioEmEdicao.idade}
                     />
-                    <TextField 
-                        required={true}
-                        fullWidth={true}
-                        id="outlined-estado" 
-                        label="Estado" 
-                        variant="outlined" 
-                        onChange={(event) => {
-                            setUsuarioEmEdicao({...usuarioEmEdicao,estado:event.target.value});
-                        }}
-                        value={usuarioEmEdicao.estado}
+
+                    <Autocomplete
+                     disablePortal
+                     options={options}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => <TextField {...params} label="Especialidade" />}
                     />
 
-                    <TextField 
-                        required={true}
-                        fullWidth={true}
-                        id="outlined-cidade" 
-                        label="Cidade" 
-                        variant="outlined" 
-                        onChange={(event) => {
-                            setUsuarioEmEdicao({...usuarioEmEdicao,cidade:event.target.value});
-                        }}
-                        value={usuarioEmEdicao.cidade}
+                    <Autocomplete
+                     disablePortal
+                     options={options}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => <TextField {...params} label="Médico" />}
                     />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer
+                     components={[
+                        'DatePicker'
+                     ]}
+                    >
+                        <DemoItem label="Selecione a data da consulta">
+                            <DatePicker defaultValue={dayjs('2022-04-17')} />
+                        </DemoItem>
+                    </DemoContainer>
+                    </LocalizationProvider>             
                 <Button variant="contained" color="success" onClick={salvar}>Salvar</Button>
             </Grid>
         )

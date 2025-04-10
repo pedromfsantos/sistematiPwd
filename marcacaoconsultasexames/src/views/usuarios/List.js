@@ -17,7 +17,7 @@ function UsuarioList(props) {
         <CardContent>
           {
             (listagem.length === 0) ? (
-              <p>Nenhum usuário encontrado</p>
+              <p>Nenhum Paciente encontrado</p>
             )
             :
             <Grid container spacing={2} p={3}>
@@ -25,13 +25,13 @@ function UsuarioList(props) {
                 <b>Nome</b>
               </Grid>
               <Grid size={1}>
-                <b>Idade</b>
+                <b>CPF</b>
               </Grid>
               <Grid size={2}>
-                <b>Estado</b>
+                <b>Médico</b>
               </Grid>
               <Grid size={3}>
-                <b>Cidade</b>
+                <b>Especialidade</b>
               </Grid>
               <Grid size={3}>
                 <b>Ações</b>
@@ -51,7 +51,7 @@ function UsuarioList(props) {
                   <Grid size={3}>
                     <p>{val.cidade}</p>
                   </Grid>
-                  <Grid size={3} spacing={50}>
+                  <Grid item xs={3} spacing={50}>
                       <Button size="small" variant="contained" onClick={()=>setUsuarioEmEdicao({...val, atual:val})} color="warning">Alterar</Button>
                       <Button size="small" variant="contained" onClick={()=>removeUsuario(val)} color="error">Excluir</Button>
                   </Grid>
