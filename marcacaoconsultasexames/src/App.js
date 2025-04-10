@@ -9,7 +9,11 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { Typography } from "@mui/material";
 import UsuarioService from "./services/usuarios";
-const UsrSrv = new UsuarioService;
+import axios from "axios";
+
+const REACT_APP_BACKEND_URL='http://localhost:5000';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const UsrSrv = new UsuarioService(axios, BACKEND_URL);
 
 function App() {
   const [listagem, setListagem] = useState([]);
