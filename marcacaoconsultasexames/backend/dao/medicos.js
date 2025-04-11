@@ -5,11 +5,12 @@ const buildObject = (res) =>{
         id: res["id"],
         nome: res["nome"],
         cpf: res["cpf"],
+        especialidade: res["especialidade"]
     }
 }
 
 export const getAllFromBD = async () => {
-    const sql = "select * from usuario";
+    const sql = "select * from medico";
     const res = await query(sql);
     const lista = []
     for (let i in res.rows){
@@ -19,27 +20,28 @@ export const getAllFromBD = async () => {
 }
 
 export const getOneFromBD = async (id) => {
-    const sql = `select * from usuario where id = ${id}`;
+    const sql = `select * from medico where id = ${id}`;
     const res = await query(sql);
     return res.rows[0] ? buildObject(res.rows[0]) : false;
 }
 
-export const persistIntoDB = async (user) => {
-    const sql = `insert into usuario ("nome","cpf") values ('${user.nome}','${user.cpf}')`;
+export const persistIntoDB = async (medico) => {
+    const sql = `insert into medico ("nome","cpf", "especialidade") values ('${medico.nome}','${medico.cpf}', '${medico.especialidade}')`;
     const res = await query(sql);
     return true;
 }
 
 export const removeFromDB = async (id) => {
-    const sql = `delete from usuario where id = ${id}`;
+    const sql = `delete from medico where id = ${id}`;
     const res = await query(sql);
     return res.rowCount ? true : false;
 }
 
 export const updateInDB = async (id, data) => {
-    const sql = `update usuario set 
+    const sql = `update medico set 
                     "nome" = '${data.nome}', 
-                    "cpf" = '${data.cpf}', 
+                    "cpf" = '${data.cpf}',
+                    "especialidade' = '${data.especialidade}' 
                 where id = ${id}`;
     const res = await query(sql);
     return res.rowCount ? true : false;

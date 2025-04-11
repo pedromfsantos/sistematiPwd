@@ -3,13 +3,15 @@ import { query } from '../dao/database.js'
 const buildObject = (res) =>{
     return {
         id: res["id"],
-        nome: res["nome"],
-        cpf: res["cpf"],
+        paciente: res["paciente"],
+        medico: res["medico"],
+        especialidade: res["especialidade"],
+        data: res["data"]
     }
 }
 
 export const getAllFromBD = async () => {
-    const sql = "select * from usuario";
+    const sql = "select * from consulta";
     const res = await query(sql);
     const lista = []
     for (let i in res.rows){
@@ -19,27 +21,29 @@ export const getAllFromBD = async () => {
 }
 
 export const getOneFromBD = async (id) => {
-    const sql = `select * from usuario where id = ${id}`;
+    const sql = `select * from consulta where id = ${id}`;
     const res = await query(sql);
     return res.rows[0] ? buildObject(res.rows[0]) : false;
 }
 
-export const persistIntoDB = async (user) => {
-    const sql = `insert into usuario ("nome","cpf") values ('${user.nome}','${user.cpf}')`;
+export const persistIntoDB = async (consulta) => {
+    const sql = `insert into consulta ("paciente", "medico", "especialidade", "data") values ('${consulta.paciente}', '${consulta.medico}''${consulta.especialidade}', '${consulta.data}')`;
     const res = await query(sql);
     return true;
 }
 
 export const removeFromDB = async (id) => {
-    const sql = `delete from usuario where id = ${id}`;
+    const sql = `delete from consulta where id = ${id}`;
     const res = await query(sql);
     return res.rowCount ? true : false;
 }
 
 export const updateInDB = async (id, data) => {
-    const sql = `update usuario set 
-                    "nome" = '${data.nome}', 
-                    "cpf" = '${data.cpf}', 
+    const sql = `update consulta set 
+                    "paciente' = '${data.paciente}' 
+                    "medico' = '${data.medico}' 
+                    "especialidade' = '${data.especialidade}' 
+                    "data' = '${data.data}' 
                 where id = ${id}`;
     const res = await query(sql);
     return res.rowCount ? true : false;
