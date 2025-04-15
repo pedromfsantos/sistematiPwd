@@ -11,9 +11,17 @@ services:
       - "3000:3000"
     environment:
       - REACT_APP_BACKEND_URL=http://localhost:5000
-    volumes:
-      - ./frontend/src:/frontend/src
+    # volumes:
+    #   - ./frontend/src:/frontend/src
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend/src
+          target: /frontend/src
+          ignore:
+            - node_modules/
   backend:
+    env_file: ".env"
     container_name: pdw-backend
     build: 
       context: ./backend
@@ -28,9 +36,17 @@ services:
       - DB_NAME=${POSTGRES_DB}
       - DB_PORT=${DATABASE_PORT}
       - DB_HOST=${DATABASE_HOST}
-    volumes:
-      - ./backend/src:/backend/src    
+    # volumes:
+    #   - ./backend/src:/backend/src 
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/src
+          target: /backend/src
+          ignore:
+            - node_modules/   
   database:
+    env_file: ".env"
     container_name: pdw-database
     image: postgres:13-alpine
     restart: always
@@ -42,4 +58,5 @@ services:
       - "5432:5432"
     volumes:
       - ./.data/database:/var/lib/postgresql/data
-      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      - ./deploy:/docker-entrypoint-initdb.d
+      
