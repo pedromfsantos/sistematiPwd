@@ -20,17 +20,17 @@ function MedicoList(props) {
               <p>Nenhum Médico encontrado</p>
             )
             :
-            <Grid container spacing={2} p={3}>
+            <Grid container spacing={2} columns={12}>
               <Grid size={3}>
                 <b>Nome</b>
               </Grid>
-              <Grid size={1}>
+              <Grid size={3}>
                 <b>CPF</b>
               </Grid>
               <Grid size={4}>
                 <b>Especialidade</b>
               </Grid>
-              <Grid size={3}>
+              <Grid size={1}>
                 <b>Ações</b>
               </Grid>
             {
@@ -39,7 +39,7 @@ function MedicoList(props) {
                   <Grid size={3}>
                     <p>{val.nome}</p>
                   </Grid>
-                  <Grid size={1}>
+                  <Grid size={3}>
                     <p>{val.cpf}</p>
                   </Grid>
                   <Grid size={4}>

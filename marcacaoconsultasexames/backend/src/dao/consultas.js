@@ -11,7 +11,7 @@ const buildObject = (res) =>{
 }
 
 export const getAllFromBD = async () => {
-    const sql = "select * from consulta";
+    const sql = "select * from consultas";
     const res = await query(sql);
     const lista = []
     for (let i in res.rows){
@@ -21,25 +21,25 @@ export const getAllFromBD = async () => {
 }
 
 export const getOneFromBD = async (id) => {
-    const sql = `select * from consulta where id = ${id}`;
+    const sql = `select * from consultas where id = ${id}`;
     const res = await query(sql);
     return res.rows[0] ? buildObject(res.rows[0]) : false;
 }
 
 export const persistIntoDB = async (consulta) => {
-    const sql = `insert into consulta ("paciente", "medico", "especialidade", "data_consulta") values ('${consulta.paciente}', '${consulta.medico}''${consulta.especialidade}', '${consulta.data_consulta}')`;
+    const sql = `insert into consultas ("paciente", "medico", "especialidade", "data_consulta") values ('${consulta.paciente}', '${consulta.medico}''${consulta.especialidade}', '${consulta.data_consulta}')`;
     const res = await query(sql);
     return true;
 }
 
 export const removeFromDB = async (id) => {
-    const sql = `delete from consulta where id = ${id}`;
+    const sql = `delete from consultas where id = ${id}`;
     const res = await query(sql);
     return res.rowCount ? true : false;
 }
 
 export const updateInDB = async (id, data) => {
-    const sql = `update consulta set 
+    const sql = `update consultas set 
                     "paciente' = '${data.paciente}' 
                     "medico' = '${data.medico}' 
                     "especialidade' = '${data.especialidade}' 

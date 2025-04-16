@@ -10,7 +10,7 @@ const buildObject = (res) =>{
 }
 
 export const getAllFromBD = async () => {
-    const sql = "select mdc.id, mdc.cpf, espc.especialidade from medicos mdc left outer join especialidades espc on mdc.especialidade = espc.id ";
+    const sql = "select mdc.id as id, mdc.nome as nome, mdc.cpf as cpf, espc.especialidade as especialidade from medicos mdc left outer join especialidades espc on mdc.especialidade = espc.id ";
     const res = await query(sql);
     const lista = []
     for (let i in res.rows){

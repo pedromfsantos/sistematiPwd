@@ -20,14 +20,14 @@ function UsuarioList(props) {
               <p>Nenhum Paciente encontrado</p>
             )
             :
-            <Grid container spacing={2} p={3}>
+            <Grid container spacing={2} columns={9}>
               <Grid size={3}>
                 <b>Nome</b>
               </Grid>
-              <Grid size={1}>
+              <Grid size={3}>
                 <b>CPF</b>
               </Grid>
-              <Grid size={3}>
+              <Grid size={1}>
                 <b>Ações</b>
               </Grid>
             {
@@ -36,17 +36,17 @@ function UsuarioList(props) {
                   <Grid size={3}>
                     <p>{val.nome}</p>
                   </Grid>
-                  <Grid size={1}>
+                  <Grid size={3}>
                     <p>{val.cpf}</p>
                   </Grid>
-                  <Grid item xs={3} spacing={50}>
+                  <Grid spacing={30}>
                       <Button size="small" variant="contained" onClick={()=>setUsuarioEmEdicao({...val, atual:val})} color="warning">Alterar</Button>
                       <Button size="small" variant="contained" onClick={()=>removeUsuario(val)} color="error">Excluir</Button>
                   </Grid>
                 </React.Fragment>
               )))
             }
-            </Grid>
+          </Grid>
           }
         </CardContent>
       </Card>

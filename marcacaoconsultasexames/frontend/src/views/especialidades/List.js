@@ -20,7 +20,7 @@ function EspecialidadeList(props) {
               <p>Nenhuma Especialidade encontrada</p>
             )
             :
-            <Grid container spacing={2} p={3}>
+            <Grid container spacing={2} columns={8}>
               <Grid size={4}>
                 <b>Especialidade</b>
               </Grid>
@@ -30,10 +30,10 @@ function EspecialidadeList(props) {
             {
               (listagem.map((val, key) => (
                 <React.Fragment key={key}>
-                  <Grid size={3}>
+                  <Grid size={4}>
                     <p>{val.nome}</p>
                   </Grid>
-                  <Grid size={1}>
+                  <Grid size={3}>
                     <p>{val.cpf}</p>
                   </Grid>
                   <Grid size={4}>

@@ -1,4 +1,4 @@
-import { getAllFromBD, getOneFromBD, persistIntoDB, removeFromDB, updateInDB } from '../dao/especidalidade.js'
+import { getAllFromBD, getOneFromBD, persistIntoDB, removeFromDB, updateInDB } from '../dao/especialidade.js'
 
 export const getEspecialidadesData = async () => {
     return await getAllFromBD()
