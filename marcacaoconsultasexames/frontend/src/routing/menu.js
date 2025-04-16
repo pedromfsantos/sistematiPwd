@@ -16,6 +16,7 @@ import {
 
 import Usuarios from '../components/usuarios.js'
 import Medicos from '../components/medicos.js'
+import Especialidades from '../components/especialidades.js'
 import App from '../App.js'
 
 
@@ -86,8 +87,8 @@ function Router(props) {
             <Route path="/" element={<App />} />
             <Route path="/pacientes" element={<Usuarios />} />
             <Route path="/medicos" element={<Medicos />} />
-            {/* <Route path="/especialidades" element={<Especialidade />} />
-            <Route path="/consultas" element={<Consulta />} /> */}
+            <Route path="/especialidades" element={<Especialidades />} />
+            {/* <Route path="/consultas" element={<Consulta />} /> */}
         </Routes>
           <MyTabs />
         </Box>

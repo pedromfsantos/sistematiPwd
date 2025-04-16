@@ -6,9 +6,9 @@ export const getUsers = async (req, res) => {
     res.send(users);
 }
 
-export const createUser = (req, res) => {   
+export const createUser = async (req, res) => {   
     const user = req.body;
-    newUser(user);
+    await newUser(user);
     const message = `Usuário [${user.nome}] incluído no sistema.`
     console.log(message);
     res.status(201).send(message)
@@ -32,7 +32,7 @@ export const deleteUser = async (req, res) => {
 };
 
 export const updateUser =  async (req,res) => {
-    editUser(req.params.id, req.body)
+    await editUser(req.params.id, req.body)
     const message = `Usuário alterado para ${req.body.nome}. Idade alterada para ${req.body.age}`
     console.log(message);
     res.status(200).send(message)    

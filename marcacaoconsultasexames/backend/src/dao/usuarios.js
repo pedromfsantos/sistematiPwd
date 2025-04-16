@@ -15,6 +15,7 @@ export const getAllFromBD = async () => {
     for (let i in res.rows){
        lista.push(buildObject(res.rows[i]))
     }
+    console.log(lista)
     return lista;
 }
 

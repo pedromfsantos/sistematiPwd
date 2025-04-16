@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
+
+import EspecialidadeService from "../services/especialidade.js";
 import MedicoService from "../services/medico.js";
+
 import axios from "axios";
 
 import MedicoList from "../views/medicos/List"
@@ -13,15 +16,18 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { Typography } from "@mui/material";
 
+
 const REACT_APP_BACKEND_URL='http://localhost:5000';
 const BACKEND_URL = REACT_APP_BACKEND_URL;
 const MdcSrv = new MedicoService(axios, BACKEND_URL);
+const EspcSrv = new EspecialidadeService(axios, BACKEND_URL);
 
 function Medicos(){
 
 const [controle, setControle] = useState(0);
 const [listagem, setListagem] = useState([]);
 const [medicoEmEdicao, setMedicoEmEdicao] = useState(false);
+const [listaEspecialidade, setListaEspecialidades] = useState([]);
 
   const carregarMedicos = async () => {
     const lista = await MdcSrv.get();
@@ -40,6 +46,25 @@ const [medicoEmEdicao, setMedicoEmEdicao] = useState(false);
       especialidade:""
     }) 
   }
+
+  const autoCompleteEspecilidades = async () => {
+    const listaEspc  = await EspcSrv.get();
+    var lista = []
+    if (listaEspc === 0){
+      
+    }
+    else 
+    {
+       lista = listaEspc.map((val, key) => (
+        {
+          label : val.especialidade,
+          id: val.id
+        }
+      ))
+    } 
+    setListaEspecialidades(lista);
+    console.log(listaEspecialidade);
+  };
 
 return (
 <Card sx={{ minWidth: 275 }}>
@@ -65,7 +90,7 @@ return (
           {medicoEmEdicao.novo ? "Novo" : "Alterando"} usuário
         </Typography>
         <MedicosForm medicoEmEdicao={medicoEmEdicao} carregarMedicos={carregarMedicos} setMedicoEmEdicao={setMedicoEmEdicao}
-         MdcSrv={MdcSrv} />
+         MdcSrv={MdcSrv} autoCompleteEspecilidades={autoCompleteEspecilidades} listaEspecialidade = {listaEspecialidade}/>
       </Box>
     </Paper>
   </CardContent>

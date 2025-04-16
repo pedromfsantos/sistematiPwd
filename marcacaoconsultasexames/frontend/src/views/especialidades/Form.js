@@ -25,9 +25,6 @@ function EspecialidadesForm(props) {
         setEspecialidadeEmEdicao(false)
     }
 
-    const handleChangeEspecialidade = (event) => {
-        setEspecialidade(event.target.value);
-      };
 
     // const handleChangeMedico = (event) => {
     //     setMedico(event.target.value);

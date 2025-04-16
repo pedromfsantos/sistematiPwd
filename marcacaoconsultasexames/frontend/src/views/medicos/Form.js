@@ -9,11 +9,26 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 function MedicosForm(props) {
-    const { carregarMedicos, medicoEmEdicao, MdcSrv, setMedicoEmEdicao} = props;
+    const { carregarMedicos, medicoEmEdicao, MdcSrv, setMedicoEmEdicao,autoCompleteEspecilidades, listaEspecialidade} = props;
+
+    const [open, setOpen] = React.useState(false);
+    const [options, setOptions] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
+
+
+    function sleep(duration) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, duration);
+        });
+      }
+      
+
     const salvar = async () => {
         if (medicoEmEdicao.novo){
             delete medicoEmEdicao.novo;
@@ -25,16 +40,27 @@ function MedicosForm(props) {
         setMedicoEmEdicao(false)
     }
 
-    // const handleChangeEspecialidade = (event) => {
-    //     setEspecialidade(event.target.value);
-    //   };
+    const handleOpen = () => {
+        setOpen(true);
+        (async () => {
+          setLoading(true);
+          await especialidades() 
+          setLoading(false);
+    
+          setOptions([...listaEspecialidade]);
+        })();
+      };
 
+    const handleClose = () => {
+        setOpen(false);
+        setOptions([]);
+      };
 
-      const options = [
-        { label: 'The Godfather', id: 1 },
-        { label: 'Pulp Fiction', id: 2 },
-      ];
-
+    const especialidades = async () => {
+        await autoCompleteEspecilidades()
+        console.log(listaEspecialidade)
+    }  
+    
 
     return (
         medicoEmEdicao && (
@@ -67,9 +93,32 @@ function MedicosForm(props) {
 
                     <Autocomplete
                      disablePortal
+                     open={open}
+                     onOpen={handleOpen}
+                     onClose={handleClose}
                      options={options}
+                     loading={loading}
                     sx={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} label="Especialidade" />}
+                    onChange={(event, value) => {
+                        setMedicoEmEdicao({...medicoEmEdicao,especialidade:value.id});
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Especialidades"
+                          slotProps={{
+                            input: {
+                              ...params.InputProps,
+                              endAdornment: (
+                                <React.Fragment>
+                                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                  {params.InputProps.endAdornment}
+                                </React.Fragment>
+                              ),
+                            },
+                          }}
+                        />
+                      )}
                     />
 
                     {/* <Autocomplete

@@ -5,6 +5,7 @@ class MedicoService {
      }
     async get () {
         const result = await this.axios.get(`${this.BACKEND_URL}/medicos`);
+        console.log("Oi")
         return result.data;
     }
     async add(item) {
