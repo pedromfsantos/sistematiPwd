@@ -47,6 +47,11 @@ function ConsultasForm(props) {
             consultaEmEdicao.paciente = user.id
             await CnsltSrv.add(consultaEmEdicao); 
         } else {
+            delete consultaEmEdicao.pacientenome;
+            delete consultaEmEdicao.cpf;
+            delete consultaEmEdicao.especialidadenome;
+            delete consultaEmEdicao.mediconome;
+            console.log(consultaEmEdicao);
             await CnsltSrv.update(consultaEmEdicao.atual, consultaEmEdicao);
         }
         await carregarConsultas();
@@ -127,7 +132,7 @@ function ConsultasForm(props) {
                         onChange={(event) => {
                             setConsultaEmEdicao({...consultaEmEdicao,nome:event.target.value});
                         }}
-                        value={consultaEmEdicao.nome}
+                        value={consultaEmEdicao.pacientenome}
                     />
 
                     <TextField

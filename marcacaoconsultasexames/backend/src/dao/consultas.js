@@ -13,16 +13,19 @@ const buildObject = (res) =>{
 const buildObjectParaView = (res) =>{
     return {
         id: res["id"],
-        nomeUsr: res["nomeusr"],
-        cpfUsr: res["cpfusr"],
-        mdcNome: res["mdcnome"],
-        especialidade: res["especialidade"],
+        paciente:res["idusr"],
+        pacientenome: res["nomeusr"],
+        cpf: res["cpfusr"],
+        mediconome: res["mdcnome"],
+        medico: res['mdcid'],
+        especialidadenome: res["especialidade"],
+        especialidade:res["especialidadeid"],
         data_consulta: res["data_consulta"]
     }
 }
 
 export const getAllFromBD = async () => {
-    const sql = "select cnslt.id as id, usr.nome as nomeusr, usr.cpf as cpfusr, espc.especialidade, mdc.nome as mdcnome, cnslt.data_consulta from consultas cnslt left outer join usuarios usr ON usr.id = cnslt.paciente left outer join medicos mdc ON mdc.id = cnslt.medico left outer join especialidades espc ON espc.id = cnslt.especialidade";
+    const sql = "select cnslt.id as id, usr.nome as nomeusr, usr.cpf as cpfusr, usr.id as idusr, espc.especialidade as especialidade, espc.id as especialidadeid, mdc.nome as mdcnome, mdc.id as mdcid, cnslt.data_consulta from consultas cnslt left outer join usuarios usr ON usr.id = cnslt.paciente left outer join medicos mdc ON mdc.id = cnslt.medico left outer join especialidades espc ON espc.id = cnslt.especialidade";
     const res = await query(sql);
     const lista = []
     for (let i in res.rows){
@@ -53,10 +56,10 @@ export const removeFromDB = async (id) => {
 
 export const updateInDB = async (id, data) => {
     const sql = `update consultas set 
-                    "paciente' = ${data.paciente},
-                    "medico' = ${data.medico},
-                    "especialidade' = ${data.especialidade},
-                    "data_consulta' = '${data.data_consulta}' 
+                    "paciente" = ${data.paciente},
+                    "medico" = ${data.medico},
+                    "especialidade" = ${data.especialidade},
+                    "data_consulta" = '${data.data_consulta}' 
                 where id = ${id}`;
     const res = await query(sql);
     return res.rowCount ? true : false;

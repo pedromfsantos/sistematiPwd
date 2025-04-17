@@ -43,16 +43,16 @@ function ConsultasList(props) {
               (listagem.map((val, key) => (
                 <React.Fragment key={key}>
                   <Grid size={2}>
-                    <p>{val.nomeUsr}</p>
+                    <p>{val.pacientenome}</p>
                   </Grid>
                   <Grid size={2}>
-                    <p>{val.cpfUsr}</p>
+                    <p>{val.cpf}</p>
                   </Grid>
                   <Grid size={2}>
-                    <p>{val.especialidade}</p>
+                    <p>{val.especialidadenome}</p>
                   </Grid>
                   <Grid size={2}>
-                    <p>{val.mdcNome}</p>
+                    <p>{val.mediconome}</p>
                   </Grid>
                   <Grid size={2}>
                     <p>{val.data_consulta}</p>
