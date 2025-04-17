@@ -25,6 +25,27 @@ export const getOneFromBD = async (id) => {
     return res.rows[0] ? buildObject(res.rows[0]) : false;
 }
 
+export const getOneFromBDUsingCPFEInsereSeNaoExiste = async (user) => {
+    const sql = `select * from usuarios where cpf = '${user.cpf}'`;
+    const res = await query(sql);
+    if (!res.rows[0]){
+        const sqlInsert = `insert into usuarios ("nome","cpf") values ('${user.nome}','${user.cpf}')`;
+        const post = await query(sqlInsert);
+        console.log("hope")
+        const userFindByCPF = await getOneFromBDUsingCPF(user.cpf)
+        console.log(userFindByCPF);
+        return userFindByCPF
+    }
+    
+    return buildObject(res.rows[0]);    
+}
+
+export const getOneFromBDUsingCPF = async (cpf) => {
+    const sql = `select * from usuarios where cpf = '${cpf}'`;
+    const res = await query(sql);
+    return res.rows[0] ? buildObject(res.rows[0]) : false;
+}
+
 export const persistIntoDB = async (user) => {
     const sql = `insert into usuarios ("nome","cpf") values ('${user.nome}','${user.cpf}')`;
     const res = await query(sql);

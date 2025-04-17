@@ -20,32 +20,32 @@ function MedicoList(props) {
               <p>Nenhum Médico encontrado</p>
             )
             :
-            <Grid container spacing={2} columns={12}>
-              <Grid size={3}>
+            <Grid container spacing={2} columns={8}>
+              <Grid size={2}>
                 <b>Nome</b>
               </Grid>
-              <Grid size={3}>
+              <Grid size={2}>
                 <b>CPF</b>
               </Grid>
-              <Grid size={4}>
+              <Grid size={2}>
                 <b>Especialidade</b>
               </Grid>
-              <Grid size={1}>
+              <Grid size={2}>
                 <b>Ações</b>
               </Grid>
             {
               (listagem.map((val, key) => (
                 <React.Fragment key={key}>
-                  <Grid size={3}>
+                  <Grid size={2}>
                     <p>{val.nome}</p>
                   </Grid>
-                  <Grid size={3}>
+                  <Grid size={2}>
                     <p>{val.cpf}</p>
                   </Grid>
-                  <Grid size={4}>
+                  <Grid size={2}>
                     <p>{val.especialidade}</p>
                   </Grid>
-                  <Grid item xs={3} spacing={50}>
+                  <Grid item xs={2} spacing={50}>
                       <Button size="small" variant="contained" onClick={()=>setMedicoEmEdicao({...val, atual:val})} color="warning">Alterar</Button>
                       <Button size="small" variant="contained" onClick={()=>removeMedico(val)} color="error">Excluir</Button>
                   </Grid>

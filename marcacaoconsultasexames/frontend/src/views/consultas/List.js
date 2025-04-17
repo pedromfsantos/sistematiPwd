@@ -21,40 +21,40 @@ function ConsultasList(props) {
             )
             :
             <Grid container spacing={2} columns={12}>
-              <Grid size={3}>
+              <Grid size={2}>
                 <b>Nome Paciente</b>
               </Grid>
               <Grid size={2}>
-                <b>CPF Paciente</b>
+                <b>CPF</b>
               </Grid>
-              <Grid size={1}>
+              <Grid size={2}>
                 <b>Especialidade</b>
               </Grid>
-              <Grid size={3}>
+              <Grid size={2}>
                 <b>Medico</b>
               </Grid>
-              <Grid size={1}>
+              <Grid size={2}>
                 <b>Data da Consulta</b>
               </Grid>
-              <Grid size={3}>
+              <Grid size={2}>
                 <b>Ações</b>
               </Grid>
             {
               (listagem.map((val, key) => (
                 <React.Fragment key={key}>
-                  <Grid size={3}>
-                    <p>{val.paciente}</p>
+                  <Grid size={2}>
+                    <p>{val.nomeUsr}</p>
                   </Grid>
                   <Grid size={2}>
-                    <p>{val.cpf}</p>
+                    <p>{val.cpfUsr}</p>
                   </Grid>
-                  <Grid size={1}>
+                  <Grid size={2}>
                     <p>{val.especialidade}</p>
                   </Grid>
-                  <Grid size={3}>
-                    <p>{val.medico}</p>
+                  <Grid size={2}>
+                    <p>{val.mdcNome}</p>
                   </Grid>
-                  <Grid size={1}>
+                  <Grid size={2}>
                     <p>{val.data_consulta}</p>
                   </Grid>
                   <Grid item xs={3} spacing={50}>

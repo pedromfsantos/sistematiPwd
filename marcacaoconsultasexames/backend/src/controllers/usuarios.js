@@ -1,4 +1,4 @@
-import {getUsersData, getUserData, newUser, removeUser, editUser} from '../models/usuarios.js'
+import {getUsersData, getUserData, newUser, removeUser, editUser, getUserDataPorCpf, getOrPostUsingCPF} from '../models/usuarios.js'
 
 export const getUsers = async (req, res) => {
     const users = await getUsersData();
@@ -22,6 +22,21 @@ export const getUser = async (req, res) => {
         res.status(404).send("Usuário não encontrado")
     }
 };
+
+export const getUserPorCpf = async (req, res) => {
+    const user = await getUserDataPorCpf(req.params.cpf);
+    res.send(user)
+}
+
+export const insereOuGetUserUsingCPF = async (req,res) => {
+    const user = req.body;
+    console.log(user)
+    const insereOuGet = await getOrPostUsingCPF(user)
+    const status = insereOuGet ? 200:400
+    console.log("insereOuGet");
+    console.log(insereOuGet);
+    res.status(status).send(insereOuGet)
+}
 
 export const deleteUser = async (req, res) => { 
     const result = await removeUser(req.params.id);

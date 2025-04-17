@@ -2,6 +2,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 
+import cpfRouter from "./src/routes/cpf.js"
+
 import usersRoutes from "./src/routes/usuarios.js";
 import medicosRoutes from "./src/routes/medicos.js";
 import especialidadesRoutes from "./src/routes/especialidades.js";
@@ -18,7 +20,11 @@ app.use(cors({
     methods:["GET, POST", "DELETE", "PATCH", "PUT"],
 }));
 app.use(bodyParser.json());
+
+usersRoutes.use('/cpf', cpfRouter)
+
 app.use("/usuarios", usersRoutes);
+app.use("/usuarios/cpf", usersRoutes);
 app.use("/especialidades", especialidadesRoutes);
 app.use("/medicos", medicosRoutes);
 app.use("/consultas", consultasRoutes);

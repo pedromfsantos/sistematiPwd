@@ -19,5 +19,15 @@ class UsuarioService {
         const result = await this.axios.delete(`${this.BACKEND_URL}/usuarios/${item.id}`);
         return true
     }
+
+    async getPorCpf(cpf) {
+        const result = await this.axios.get(`${this.BACKEND_URL}/usuarios/cpf/${cpf}` )
+        return result.data
+    }
+
+    async InsereOuPostPorCPF(user) {
+        const result = await this.axios.post(`${this.BACKEND_URL}/usuarios/cpf/${user.cpf}`, user)
+        return result.data
+    }
   }
 module.exports = UsuarioService; 

@@ -13,15 +13,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 
 function ConsultasForm(props) {
-    const { carregarConsultas, consultaEmEdicao, CnsltSrv, setConsultaEmEdicao,autoCompleteEspecilidades, listaEspecialidade, autoCompleteMedicos, listaMedicos} = props;
+    const { carregarConsultas, consultaEmEdicao, CnsltSrv, setConsultaEmEdicao, autoCompleteEspecilidades, listaEspecialidade, autoCompleteMedicos, listaMedicos, UsrSrv} = props;
 
-    // const [openEspecialidade, setOpenEspecialidade] = React.useState(false);
-    // const [openMedico, setOpenMedico] = React.useState(false);
-    const [open, setOpen] = React.useState(false);
-    // const [optionsEspecialidade, setOptionsEspecialidade] = React.useState([]);
-    // const [optionsMedico, setOptionsMedico] = React.useState([]);
+    const [openEspecialidade, setOpenEspecialidade] = React.useState(false);
+    const [openMedico, setOpenMedico] = React.useState(false);
+    // const [open, setOpen] = React.useState(false);
+    const [optionsEspecialidade, setOptionsEspecialidade] = React.useState([]);
+    const [optionsMedico, setOptionsMedico] = React.useState([]);
     const [options, setOptions] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+    const [cpfJaCadastradado, setCpfJaCadastradado] = React.useState(false)
+
 
 
     function sleep(duration) {
@@ -35,8 +37,15 @@ function ConsultasForm(props) {
 
     const salvar = async () => {
         if (consultaEmEdicao.novo){
+            console.log(consultaEmEdicao.cpf);
+            const user = await UsrSrv.InsereOuPostPorCPF({nome:consultaEmEdicao.nome, cpf:consultaEmEdicao.cpf})
             delete consultaEmEdicao.novo;
-            await CnsltSrv.add(consultaEmEdicao);
+            delete consultaEmEdicao.nome;
+            delete consultaEmEdicao.cpf;
+            console.log("usuario")
+            console.log(user.id)
+            consultaEmEdicao.paciente = user.id
+            await CnsltSrv.add(consultaEmEdicao); 
         } else {
             await CnsltSrv.update(consultaEmEdicao.atual, consultaEmEdicao);
         }
@@ -44,58 +53,66 @@ function ConsultasForm(props) {
         setConsultaEmEdicao(false)
     }
 
-    const handleOpen = (asyncFunction, list) => {
-        setOpen(true);
+    const especialidadeDependeMedico = async (id) => {
+      await CnsltSrv.get(id)
+    }
+
+    const medicoDependeEspecialidade = async (id) => {
+      await CnsltSrv.get(id)
+    }
+
+    const handleOpenEspecialidade = () => {
+        setOpenEspecialidade(true);
         (async () => {
           setLoading(true);
-          await asyncFunction() 
+          await especialidades() 
           setLoading(false);
     
-          setOptions([...list]);
+          setOptionsEspecialidade([...listaEspecialidade]);
         })();
-    }
+      };
 
-    // const handleOpenEspecialidade = () => {
-    //     setOpen(true);
-    //     (async () => {
-    //       setLoading(true);
-    //       await especialidades() 
-    //       setLoading(false);
+    const handleOpenMedico = () => {
+        setOpenMedico(true);
+        (async () => {
+          setLoading(true);
+          await medicos() 
+          setLoading(false);
     
-    //       setOptionsEspecialidade([...listaEspecialidade]);
-    //     })();
-    //   };
+          setOptionsMedico([...listaMedicos]);
+        })();
+      };
 
-    // const handleOpenMedico = () => {
-    //     setOpen(true);
-    //     (async () => {
-    //       setLoading(true);
-    //       await especialidades() 
-    //       setLoading(false);
+
+    const handleCloseEspecialidade = () => {
+        setOpenEspecialidade(false);
+        setOptionsEspecialidade([]);
+      };
+
+    const handleCloseMedico = () => {
+        setOpenMedico(false);
+        setOptionsMedico([]);
+      };
+
+    const especialidades = async () => {
+        await autoCompleteEspecilidades()
+        console.log(listaEspecialidade)
+    }  
+
     
-    //       setOptionsMedico([...listaEspecialidade]);
-    //     })();
-    //   };
+    const medicos = async () => {
+      await autoCompleteMedicos()
+      console.log(listaEspecialidade)
+  }  
 
-    const handleClose = () => {
-        setOpen(false);
-        setOptions([]);
-    }
-
-    // const handleCloseEspecialidade = () => {
-    //     setOpen(false);
-    //     setOptions([]);
-    //   };
-
-    // const handleCloseMedico = () => {
-    //     setOpen(false);
-    //     setOptions([]);
-    //   };
-
-    // const especialidades = async () => {
-    //     await autoCompleteEspecilidades()
-    //     console.log(listaEspecialidade)
-    // }  
+  const handleChange = (date) => {
+    const d = new Date(date)
+    console.log(d)
+    setConsultaEmEdicao({...consultaEmEdicao,data_consulta:d})
+    // console.log(valueOfInput)
+    console.log(consultaEmEdicao)
+    ///...
+  };
     
 
     return (
@@ -113,7 +130,9 @@ function ConsultasForm(props) {
                         value={consultaEmEdicao.nome}
                     />
 
-                    <TextField 
+                    <TextField
+                        error = {cpfJaCadastradado}
+                        helperText = "Este CPF ja esta Cadastrado" 
                         required={true}
                         fullWidth={true}
                         id="outlined-cpf" 
@@ -128,12 +147,12 @@ function ConsultasForm(props) {
 
                     <Autocomplete
                      disablePortal
-                     open={open}
-                     onOpen={handleOpen(autoCompleteEspecilidades,listaEspecialidade)}
-                     onClose={handleClose}
-                     options={options}
+                     required={true}
+                     open={openEspecialidade}
+                     onOpen={handleOpenEspecialidade}
+                     onClose={handleCloseEspecialidade}
+                     options={optionsEspecialidade}
                      loading={loading}
-                     defaultValue={especialidadeDependeMedico}
                     sx={{ width: 300 }}
                     onChange={(event, value) => {
                         setConsultaEmEdicao({...consultaEmEdicao,especialidade:value.id});
@@ -159,20 +178,20 @@ function ConsultasForm(props) {
                     
                     <Autocomplete
                      disablePortal
-                     open={open}
-                     onOpen={handleOpen(autoCompleteMedicos,listaMedicos)}
-                     onClose={handleClose}
-                     options={options}
+                     required={true}
+                     open={openMedico}
+                     onOpen={handleOpenMedico}
+                     onClose={handleCloseMedico}
+                     options={optionsMedico}
                      loading={loading}
                     sx={{ width: 300 }}
                     onChange={(event, value) => {
                         setConsultaEmEdicao({...consultaEmEdicao,medico:value.id});
                     }}
-                    defaultValue={medicoDependeEspecialidade}
                     renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Especialidades"
+                          label="Médicos"
                           slotProps={{
                             input: {
                               ...params.InputProps,
@@ -188,14 +207,6 @@ function ConsultasForm(props) {
                       )}
                     />
 
-
-
-                    {/* <Autocomplete
-                     disablePortal
-                     options={options}
-                    sx={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} label="Médico" />}
-                    />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer
                      components={[
@@ -203,10 +214,13 @@ function ConsultasForm(props) {
                      ]}
                     > 
                         <DemoItem label="Selecione a data da consulta">
-                            <DatePicker defaultValue={dayjs('2022-04-17')} />
+                            <DatePicker 
+                              required={true}
+                              onChange={handleChange}
+                              />
                         </DemoItem>
                     </DemoContainer>
-                    </LocalizationProvider>              */}
+                    </LocalizationProvider>             
                 <Button variant="contained" color="success" onClick={salvar}>Salvar</Button>
             </Grid>
         )

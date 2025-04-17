@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
+
 import ConsultaService from "../services/consultas.js";
+import EspecialidadeService from "../services/especialidade.js"
+import MedicoService from "../services/medico.js"
+import UsuarioService from "../services/usuarios.js"
+
 import axios from "axios";
 
 import ConsultaList from "../views/consultas/List"
@@ -15,7 +20,11 @@ import { Typography } from "@mui/material";
 
 const REACT_APP_BACKEND_URL='http://localhost:5000';
 const BACKEND_URL = REACT_APP_BACKEND_URL;
+
 const CnsltSrv = new ConsultaService(axios, BACKEND_URL);
+const EspcSrv = new EspecialidadeService(axios, BACKEND_URL);
+const MdcSrv = new MedicoService(axios, BACKEND_URL);
+const UsrSrv = new UsuarioService(axios, BACKEND_URL);
 
 function Consultas(){
 
@@ -23,9 +32,13 @@ const [controle, setControle] = useState(0);
 const [listagem, setListagem] = useState([]);
 const [consultaEmEdicao, setConsultaEmEdicao] = useState(false);
 
+const [listaEspecialidade, setListaEspecialidades] = useState([]);
+const [listaMedicos, setListaMedicos] = useState([]);
+
   const carregarConsultas = async () => {
     const lista = await CnsltSrv.get();
     setListagem(lista);
+    console.log (listagem);
   }
 
   useEffect(() => {
@@ -35,12 +48,54 @@ const [consultaEmEdicao, setConsultaEmEdicao] = useState(false);
   const novoConsulta = () => {
     setConsultaEmEdicao({
       novo: true,
+      nome:"",
+      cpf:"",
       paciente:"",
       medico:"",
       especialidade:"",
       data_consulta:""
     }) 
   }
+
+  const autoCompleteEspecilidades = async () => {
+    const listaEspc  = await EspcSrv.get();
+    var lista = []
+    if (listaEspc === 0){
+      
+    }
+    else 
+    {
+       lista = listaEspc.map((val, key) => (
+        {
+          label : val.especialidade,
+          id: val.id
+        }
+      ))
+    } 
+    setListaEspecialidades(lista);
+    console.log(listaEspecialidade);
+  };
+
+  const autoCompleteMedicos = async () => {
+    const listaMdc  = await MdcSrv.get();
+    var lista = []
+    if (listaMdc === 0){
+      
+    }
+    else 
+    {
+       lista = listaMdc.map((val, key) => (
+        {
+          label : val.nome,
+          especialidade: val.especialidade,
+          id: val.id
+        }
+      ))
+    } 
+    setListaMedicos(lista);
+  
+  };
+
 
 return (
 <Card sx={{ minWidth: 275 }}>
@@ -66,7 +121,8 @@ return (
           {consultaEmEdicao.novo ? "Novo" : "Alterando"} usuário
         </Typography>
         <ConsultasForm consultaEmEdicao={consultaEmEdicao} carregarConsultas={carregarConsultas} setConsultaEmEdicao={setConsultaEmEdicao}
-         CnsltSrv={CnsltSrv} />
+          autoCompleteEspecilidades={autoCompleteEspecilidades} listaEspecialidade={listaEspecialidade} autoCompleteMedicos={autoCompleteMedicos} listaMedicos={listaMedicos}
+         CnsltSrv={CnsltSrv} UsrSrv={UsrSrv} />
       </Box>
     </Paper>
   </CardContent>
