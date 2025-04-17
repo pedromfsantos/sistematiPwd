@@ -13,7 +13,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 
 function ConsultasForm(props) {
-    const { carregarConsultas, consultaEmEdicao, CnsltSrv, setConsultaEmEdicao, autoCompleteEspecilidades, listaEspecialidade, autoCompleteMedicos, listaMedicos, UsrSrv} = props;
+    const { carregarConsultas, consultaEmEdicao, CnsltSrv, setConsultaEmEdicao, autoCompleteEspecilidades, listaEspecialidade, autoCompleteMedicos, listaMedicos, UsrSrv, listagem} = props;
 
     const [openEspecialidade, setOpenEspecialidade] = React.useState(false);
     const [openMedico, setOpenMedico] = React.useState(false);
@@ -118,8 +118,37 @@ function ConsultasForm(props) {
     console.log(consultaEmEdicao)
     ///...
   };
-    
 
+  const dataJaAgendada = (date) => {
+    const day = date.day();
+    const d = new Date(date)
+    if (listagem.length === 0){
+      return day === 0 || day === 6;
+    }
+    else {
+      const data = listagem.map((val, key) => (
+        new Date(val.data_consulta)
+      ))
+      var dataIndisponivel = false
+      data.forEach((ConsultaDate)=> {
+        console.log("d:" + d.toDateString())
+        
+        var consultaDateReal = new Date();
+        consultaDateReal.setDate(ConsultaDate.getDate() + 1)
+        console.log("date: "+ consultaDateReal.toDateString())
+         if(consultaDateReal.toDateString() == d.toDateString()){
+          console.log("oiii")
+          dataIndisponivel = true
+         }
+         else {
+          dataIndisponivel = false
+         }
+         console.log(dataIndisponivel)
+      })
+      return day === 0 || day === 6 || dataIndisponivel;
+    } 
+  };
+   
     return (
         consultaEmEdicao && (
             <Grid>
@@ -219,7 +248,8 @@ function ConsultasForm(props) {
                      ]}
                     > 
                         <DemoItem label="Selecione a data da consulta">
-                            <DatePicker 
+                            <DatePicker
+                              shouldDisableDate={dataJaAgendada} 
                               required={true}
                               onChange={handleChange}
                               />

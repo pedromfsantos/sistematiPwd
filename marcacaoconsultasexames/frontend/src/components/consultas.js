@@ -122,7 +122,7 @@ return (
         </Typography>
         <ConsultasForm consultaEmEdicao={consultaEmEdicao} carregarConsultas={carregarConsultas} setConsultaEmEdicao={setConsultaEmEdicao}
           autoCompleteEspecilidades={autoCompleteEspecilidades} listaEspecialidade={listaEspecialidade} autoCompleteMedicos={autoCompleteMedicos} listaMedicos={listaMedicos}
-         CnsltSrv={CnsltSrv} UsrSrv={UsrSrv} />
+         CnsltSrv={CnsltSrv} UsrSrv={UsrSrv} listagem={listagem}/>
       </Box>
     </Paper>
   </CardContent>
