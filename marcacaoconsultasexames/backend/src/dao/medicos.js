@@ -21,7 +21,7 @@ export const getAllFromBD = async () => {
 }
 
 export const getOneFromBD = async (id) => {
-    const sql = `select * from medicos where id = ${id}`;
+    const sql = `select mdc.id as id, mdc.nome as nome, mdc.cpf as cpf, espc.especialidade as especialidade from medicos mdc left outer join especialidades espc ON mdc.especialidade = espc.id where mdc.id = ${id}`;
     const res = await query(sql);
     return res.rows[0] ? buildObject(res.rows[0]) : false;
 }
@@ -46,4 +46,16 @@ export const updateInDB = async (id, data) => {
                 where id = ${id}`;
     const res = await query(sql);
     return res.rowCount ? true : false;
+}
+
+export const getMedicosPorEspecialidadeInDB = async (idEspecialidade) => {
+    const sql = `select mdc.id as id, mdc.nome as nome, mdc.cpf as cpf, espc.especialidade as especialidade from medicos mdc left outer join especialidades espc ON mdc.especialidade = espc.id where mdc.especialidade = ${idEspecialidade}`;
+    const res = await query(sql);
+    const lista = []
+    for (let i in res.rows){
+       lista.push(buildObject(res.rows[i]))
+    }
+    
+    return lista;
+
 }

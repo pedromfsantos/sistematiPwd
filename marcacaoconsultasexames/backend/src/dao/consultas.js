@@ -64,3 +64,14 @@ export const updateInDB = async (id, data) => {
     const res = await query(sql);
     return res.rowCount ? true : false;
 }
+
+export const getAllConsultasParaPacienteInDB = async (idPaciente) => {
+    const sql = `select cnslt.id as id, usr.nome as nomeusr, usr.cpf as cpfusr, usr.id as idusr, espc.especialidade as especialidade, espc.id as especialidadeid, mdc.nome as mdcnome, mdc.id as mdcid, cnslt.data_consulta from consultas cnslt left outer join usuarios usr ON usr.id = cnslt.paciente left outer join medicos mdc ON mdc.id = cnslt.medico left outer join especialidades espc ON espc.id = cnslt.especialidade where cnslt.paciente = ${idPaciente}`;
+    const res = await query(sql);
+    const lista = []
+    for (let i in res.rows){
+        console.log(res.rows[i]);
+       lista.push(buildObjectParaView(res.rows[i]))
+    }
+    return lista;
+}

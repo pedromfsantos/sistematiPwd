@@ -8,6 +8,16 @@ class MedicoService {
         console.log("Oi")
         return result.data;
     }
+    async getById (id) {
+        const result = await this.axios.get(`${this.BACKEND_URL}/medicos/${id}`);
+        console.log("Oi")
+        return result.data;
+    }
+    async getMedicosByEspecialidade (especialidade) {
+        const result = await this.axios.get(`${this.BACKEND_URL}/medicos/especialidade/${especialidade}`);
+        console.log("Oi")
+        return result.data;
+    }
     async add(item) {
         const result = await this.axios.post(`${this.BACKEND_URL}/medicos`,item);
         return true

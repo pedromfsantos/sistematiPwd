@@ -14,10 +14,13 @@ import {
   StaticRouter,
 } from 'react-router';
 
+
 import Usuarios from '../components/usuarios.js'
 import Medicos from '../components/medicos.js'
 import Especialidades from '../components/especialidades.js'
 import Consultas from '../components/consultas.js'
+
+
 import App from '../App.js'
 
 
@@ -57,7 +60,7 @@ function Router(props) {
     // This means that if you have nested routes like:
     // users, users/new, users/edit.
     // Then the order should be ['users/add', 'users/edit', 'users'].
-    const routeMatch = useRouteMatch(['/consultas', '/pacientes', '/medicos', '/especialidades']);
+    const routeMatch = useRouteMatch(['/consultas', '/pacientes', '/medicos', '/especialidades' ]);
     const currentTab = routeMatch?.pattern?.path;
   
     return (
@@ -66,6 +69,7 @@ function Router(props) {
         <Tab label="Pacientes" value="/pacientes" to="/pacientes" component={Link} />
         <Tab label="Médicos" value="/medicos" to="/medicos" component={Link} />
         <Tab label="Especialidades" value="/especialidades" to="/especialidades" component={Link} />
+
       </Tabs>
     );
   }
@@ -84,6 +88,7 @@ function Router(props) {
     return (
       <Router>
         <Box sx={{ width: '100%' }}>
+        <MyTabs />
         <Routes>
             <Route path="/" element={<App />} />
             <Route path="/pacientes" element={<Usuarios />} />
@@ -91,7 +96,7 @@ function Router(props) {
             <Route path="/especialidades" element={<Especialidades />} />
             <Route path="/consultas" element={<Consultas />} />
         </Routes>
-          <MyTabs />
+          
         </Box>
       </Router>
     );

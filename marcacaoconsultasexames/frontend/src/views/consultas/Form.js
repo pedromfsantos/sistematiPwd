@@ -22,7 +22,6 @@ function ConsultasForm(props) {
     const [optionsMedico, setOptionsMedico] = React.useState([]);
     const [options, setOptions] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
-    const [cpfJaCadastradado, setCpfJaCadastradado] = React.useState(false)
 
 
 
@@ -71,21 +70,22 @@ function ConsultasForm(props) {
         (async () => {
           setLoading(true);
           await especialidades() 
-          setLoading(false);
-    
-          setOptionsEspecialidade([...listaEspecialidade]);
+          setLoading(false);  
+         
+          
         })();
       };
 
-    const handleOpenMedico = () => {
+    const handleOpenMedico = async () => {
         setOpenMedico(true);
         (async () => {
           setLoading(true);
-          await medicos() 
+          await medicos()
+         
           setLoading(false);
-    
-          setOptionsMedico([...listaMedicos]);
+      
         })();
+        
       };
 
 
@@ -100,13 +100,15 @@ function ConsultasForm(props) {
       };
 
     const especialidades = async () => {
-        await autoCompleteEspecilidades()
+        const lista = await autoCompleteEspecilidades(consultaEmEdicao.medico)
+        setOptionsEspecialidade([...lista]) 
         console.log(listaEspecialidade)
     }  
 
     
     const medicos = async () => {
-      await autoCompleteMedicos()
+      const lista = await autoCompleteMedicos(consultaEmEdicao.especialidade)
+      setOptionsMedico([...lista]) 
       console.log(listaEspecialidade)
   }  
 
@@ -131,24 +133,31 @@ function ConsultasForm(props) {
       ))
       var dataIndisponivel = false
       data.forEach((ConsultaDate)=> {
-        console.log("d:" + d.toDateString())
+
         
         var consultaDateReal = new Date();
         consultaDateReal.setDate(ConsultaDate.getDate() + 1)
-        console.log("date: "+ consultaDateReal.toDateString())
+        
          if(consultaDateReal.toDateString() == d.toDateString()){
-          console.log("oiii")
+          console.log("date: "+ consultaDateReal.toDateString())
+          console.log("d:" + d.toDateString())
           dataIndisponivel = true
          }
-         else {
-          dataIndisponivel = false
-         }
-         console.log(dataIndisponivel)
       })
       return day === 0 || day === 6 || dataIndisponivel;
     } 
   };
    
+  const onChangeEspecialidade = (e, value) => {
+    const set = value==null ? "" : value.id
+    setConsultaEmEdicao({...consultaEmEdicao, especialidade:set });
+  }
+  
+  const onChangeMedico = (e, value) => {
+    const set = (value==null ? "" : value.id)
+    setConsultaEmEdicao({...consultaEmEdicao, medico:set });
+  }
+
     return (
         consultaEmEdicao && (
             <Grid>
@@ -165,8 +174,6 @@ function ConsultasForm(props) {
                     />
 
                     <TextField
-                        error = {cpfJaCadastradado}
-                        helperText = "Este CPF ja esta Cadastrado" 
                         required={true}
                         fullWidth={true}
                         id="outlined-cpf" 
@@ -188,8 +195,8 @@ function ConsultasForm(props) {
                      options={optionsEspecialidade}
                      loading={loading}
                     sx={{ width: 300 }}
-                    onChange={(event, value) => {
-                        setConsultaEmEdicao({...consultaEmEdicao,especialidade:value.id});
+                    onChange={(e,value) => {
+                      onChangeEspecialidade(e,value);
                     }}
                     renderInput={(params) => (
                         <TextField
@@ -219,8 +226,8 @@ function ConsultasForm(props) {
                      options={optionsMedico}
                      loading={loading}
                     sx={{ width: 300 }}
-                    onChange={(event, value) => {
-                        setConsultaEmEdicao({...consultaEmEdicao,medico:value.id});
+                    onChange={(e,value) => {
+                      onChangeMedico(e,value);
                     }}
                     renderInput={(params) => (
                         <TextField

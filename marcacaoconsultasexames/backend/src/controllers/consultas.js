@@ -1,4 +1,4 @@
-import {getConsultasData, getConsultaData, newConsulta, removeConsulta, editConsulta} from '../models/consultas.js'
+import {getConsultasData, getConsultaData, newConsulta, removeConsulta, editConsulta, getConsultasPorIdPaciente} from '../models/consultas.js'
 
 export const getConsultas = async (req, res) => {
     const consultas = await getConsultasData();
@@ -36,3 +36,12 @@ export const updateConsulta =  async (req,res) => {
     console.log(message);
     res.status(200).send(message)    
 };
+
+export const getConsultaPorIdPaciente = async (req,res) => {
+    const consultasPaciente = await getConsultasPorIdPaciente(req.params.idPaciente);
+    if (consultasPaciente){
+        res.send(consultasPaciente)
+    } else {
+        res.send(false)
+    }
+}

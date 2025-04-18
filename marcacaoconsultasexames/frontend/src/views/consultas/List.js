@@ -4,16 +4,52 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+
 function ConsultasList(props) {
-  const { listagem, setConsultaEmEdicao, carregarConsultas, CnsltSrv } = props;
+  const { listagem, setConsultaEmEdicao, carregarConsultas, CnsltSrv, consultaPorCPF, setCpfPesquisa } = props;
   
   const removeConsulta = async (item) => {
     await CnsltSrv.remove(item);
     await carregarConsultas();
   }
+
+  const busca = async () => {
+    await consultaPorCPF();
+  }
   
   return (
       <Card>
+      <Paper
+      component="form"
+      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+    >
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      {/* <IconButton sx={{ p: '10px' }} aria-label="menu">
+        <MenuIcon />
+      </IconButton> */}
+      <InputBase
+        sx={{ ml: 1, flex: 1 }}
+        placeholder="Buscar por CPF"
+        defaultValue=""
+        inputProps={{ 'aria-label': 'Buscar por CPF' }}
+        onChange={(event) => {
+          setCpfPesquisa(event.target.value);
+      }}
+      />
+      <IconButton type="button" sx={{ p: '10px' }} aria-label="search"  onClick={busca}>
+        <SearchIcon />
+      </IconButton>
+      {/* <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" /> */}
+      {/* <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions">
+        <DirectionsIcon />
+      </IconButton> */}
+    </Paper>
         <CardContent>
           {
             (listagem.length === 0) ? (

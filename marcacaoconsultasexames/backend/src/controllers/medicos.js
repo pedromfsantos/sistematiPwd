@@ -1,4 +1,4 @@
-import {getMedicosData, getMedicoData, newMedico, removeMedico, editMedico} from '../models/medicos.js'
+import {getMedicosData, getMedicoData, newMedico, removeMedico, editMedico, getMedicosPorEspecialidade} from '../models/medicos.js'
 
 export const getMedicos = async (req, res) => {
     const medicos = await getMedicosData();
@@ -36,3 +36,8 @@ export const updateMedico =  async (req,res) => {
     console.log(message);
     res.status(200).send(message)    
 };
+
+export const getMedicosPorIdEspecialidade = async (req,res) => {
+    const medicosPorEspecialidade = await getMedicosPorEspecialidade(req.params.idEspecialidade);
+    res.send(medicosPorEspecialidade)
+}

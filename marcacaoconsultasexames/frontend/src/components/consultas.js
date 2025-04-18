@@ -17,6 +17,12 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { Typography } from "@mui/material";
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import DirectionsIcon from '@mui/icons-material/Directions';
 
 const REACT_APP_BACKEND_URL='http://localhost:5000';
 const BACKEND_URL = REACT_APP_BACKEND_URL;
@@ -35,14 +41,16 @@ const [consultaEmEdicao, setConsultaEmEdicao] = useState(false);
 const [listaEspecialidade, setListaEspecialidades] = useState([]);
 const [listaMedicos, setListaMedicos] = useState([]);
 
+const[cpfPesquisa, setCpfPesquisa] = useState("");
+
   const carregarConsultas = async () => {
     const lista = await CnsltSrv.get();
     setListagem(lista);
-    console.log (listagem);
   }
 
   useEffect(() => {
     carregarConsultas();
+    consultaPorCPF();
   },[controle])
 
   const novoConsulta = () => {
@@ -57,44 +65,98 @@ const [listaMedicos, setListaMedicos] = useState([]);
     }) 
   }
 
-  const autoCompleteEspecilidades = async () => {
-    const listaEspc  = await EspcSrv.get();
+  const autoCompleteEspecilidades = async (medico) => {
+    var listaEspc = []
     var lista = []
-    if (listaEspc === 0){
+    if (medico == ""){
+       listaEspc  = await EspcSrv.get();
       
-    }
-    else 
-    {
+      if (listaEspc.length === 0){
+      
+      }   
+      else 
+      {
        lista = listaEspc.map((val, key) => (
         {
           label : val.especialidade,
           id: val.id
         }
-      ))
-    } 
-    setListaEspecialidades(lista);
-    console.log(listaEspecialidade);
+        ))
+      } 
+    }
+    else {
+       listaEspc = await MdcSrv.getById(medico)
+       if (listaEspc == false){
+
+       }
+       else {
+        lista = [{
+          label : listaEspc.especialidade,
+          id: listaEspc.id
+        }]
+       }
+    }
+    
+    
+    return lista;
   };
 
-  const autoCompleteMedicos = async () => {
-    const listaMdc  = await MdcSrv.get();
+  const autoCompleteMedicos = async (especialidade) => {
+    var listaMdc  = []
     var lista = []
-    if (listaMdc === 0){
+    console.log("especialidade no autocomplette dos medicos "+ especialidade)
+    if (especialidade == ""){
+      listaMdc  = await MdcSrv.get();
+     
+      if (listaMdc.length === 0){
+     
+     }   
+     else 
+     {
+      lista = listaMdc.map((val, key) => (
+       {
+        label : val.nome,
+        especialidade: val.especialidade,
+        id: val.id
+       }
+       ))
+     } 
+   }
+   else {
+    listaMdc = await MdcSrv.getMedicosByEspecialidade(especialidade)
+    if (listaMdc.length === 0){
       
-    }
+    }   
     else 
     {
-       lista = listaMdc.map((val, key) => (
-        {
-          label : val.nome,
-          especialidade: val.especialidade,
-          id: val.id
-        }
+     lista = listaMdc.map((val, key) => (
+      {
+        label : val.nome,
+        especialidade: val.especialidade,
+        id: val.id
+      }
       ))
     } 
-    setListaMedicos(lista);
-  
+   }
+    return lista;
   };
+
+
+  const consultaPorCPF = async () => {
+    console.log(cpfPesquisa)
+    if (cpfPesquisa==""){
+      carregarConsultas()
+    }else{
+      const user = await UsrSrv.getPorCpf(cpfPesquisa)
+      if (user == false){
+       setListagem([]);
+      }
+      else {
+       const consulta = await CnsltSrv.getPorIdPaciente(user.id)
+      setListagem(consulta)
+      }
+    }               
+  }
 
 
 return (
@@ -105,7 +167,7 @@ return (
   </Typography>
   <Paper>
     <Box p={5} mt={2}>
-      <ConsultaList listagem={listagem} setConsultaEmEdicao={setConsultaEmEdicao} carregarConsultas={carregarConsultas} CnsltSrv={CnsltSrv} />
+      <ConsultaList listagem={listagem} setConsultaEmEdicao={setConsultaEmEdicao} carregarConsultas={carregarConsultas} CnsltSrv={CnsltSrv} consultaPorCPF={consultaPorCPF} setCpfPesquisa={setCpfPesquisa}/>
     </Box>
   </Paper>
 </CardContent>

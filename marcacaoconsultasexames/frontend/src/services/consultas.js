@@ -19,5 +19,10 @@ class ConsultasService {
         const result = await this.axios.delete(`${this.BACKEND_URL}/consultas/${item.id}`);
         return true
     }
+
+    async getPorIdPaciente(id){
+        const result = await this.axios.get(`${this.BACKEND_URL}/consultas/paciente/${id}`);
+        return result.data;
+    }
   }
 module.exports = ConsultasService; 
