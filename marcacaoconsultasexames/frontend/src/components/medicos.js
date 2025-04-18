@@ -61,9 +61,8 @@ const [listaEspecialidade, setListaEspecialidades] = useState([]);
           id: val.id
         }
       ))
-    } 
-    setListaEspecialidades(lista);
-    console.log(listaEspecialidade);
+    }
+    return lista 
   };
 
 return (

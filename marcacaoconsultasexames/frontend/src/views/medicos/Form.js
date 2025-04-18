@@ -47,7 +47,6 @@ function MedicosForm(props) {
           await especialidades() 
           setLoading(false);
     
-          setOptions([...listaEspecialidade]);
         })();
       };
 
@@ -57,9 +56,14 @@ function MedicosForm(props) {
       };
 
     const especialidades = async () => {
-        await autoCompleteEspecilidades()
-        console.log(listaEspecialidade)
-    }  
+      const lista = await autoCompleteEspecilidades()
+      setOptions([...lista]) 
+  }    
+
+    const onChangeEspecialidade = (e, value) => {
+      const set = value==null ? "" : value.id
+      setMedicoEmEdicao({...medicoEmEdicao, especialidade:set });
+    }
     
 
     return (
@@ -99,8 +103,8 @@ function MedicosForm(props) {
                      options={options}
                      loading={loading}
                     sx={{ width: 300 }}
-                    onChange={(event, value) => {
-                        setMedicoEmEdicao({...medicoEmEdicao,especialidade:value.id});
+                    onChange={(e,value) => {
+                      onChangeEspecialidade(e,value);
                     }}
                     renderInput={(params) => (
                         <TextField
