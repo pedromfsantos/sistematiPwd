@@ -69,7 +69,7 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
   - Salvar os dados necessariamente significa que os dados serão persistidos no banco de dados. 
 
 
-##  Estrutura do banco de dados
+## :open_file_folder: Estrutura do banco de dados
 
 ## 📝 Licença
 
