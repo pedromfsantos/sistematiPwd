@@ -24,7 +24,7 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 - Clonar este repositório localmente.
   
 
-## 🚀 Realizando setup
+## :whale2: Realizando setup
 
 - Abra o docker desktop, caso esteja usando ele.
 
@@ -51,9 +51,25 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
   - ```localhost:5000/medicos/especialidade/{idEspecialidade}```: irá mostrar todos os médicos que tem a especialidade dada pelo id.
   - ```localhost:5000/consultas```:irá mostrar todos as consultas cadastradas
   - ```localhost:5000/consultas/paciente/{idPaciente}```:irá mostrar todos as consultas por id de paciente
-  - 
+
+- Para verificar o banco de dados, você pode tentar se conectar a ele usando seu aplicativo de preferência ou acessando o terminal do container.
+    - Basta executar o comando ```docker ps``` para ver quais containers estao em execução e pegar os três primeiros caracteres do id do container pdw-database. Vamos supor que é 9bd
+    - Assim basta executar ```docker exec -it 9bd bash```
+    - Assim, você terá acesso a linha de comando como ``` root ``` ao container do banco de dados.
+    - Porém vocês não pode executar comandos no postgres como root, assim, execute ```su postgres```, e o usuário será trocado para um que possa executar tais comandos.
+    - Dessa maneira você pode executar comandos SQL após executar ```psql``` na linha de comando.
+  
+- No frontend basta acessar as tabs e seguir as instruções.
+  - Cada cadastro possui as opções de criar um novo elemento a partir do botão "novo"
+  - Quando criado, o elemento será listado na tab especifica com as ações de "Alterar" e "Excluir".
+  - A tab de consulta é a única que permite uma pesquisa por CPF.
+  - A criação de médicos depende da existência de especialidades, uma vez que usa um autocomplete para exibir as opções existentes para o cadastro.
+  - A criação de consultas depende da existência de médicos e especialidades, e os campos também são autocompletes dependentes entre si (selecionar um médico automaticamente seleciona uma especialidade, e selecionar uma especialidade limita os médicos que possuem àquela especialidade no campo de seleção).
+  - As datas das consultas ficam indisponíveis aos finais de semana e quando alguem realiza um agendamento naquela data.
+  - Salvar os dados necessariamente significa que os dados serão persistidos no banco de dados. 
 
 
+##  Estrutura do banco de dados
 
 ## 📝 Licença
 
