@@ -71,6 +71,15 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 ## :open_file_folder: Estrutura do banco de dados
 
+  - O banco de dados é composta por quatro entidades:
+    - Medicos
+    - Usuarios (pacientes)
+    - Especialidades
+    - Consultas
+   
+![image](https://github.com/user-attachments/assets/7ace6981-51b6-4d27-814d-8ec46c57bd96)
+
+
 ## 📝 Licença
 
 Esse projeto está sob licença. Veja o arquivo [LICENÇA](LICENSE.md) para mais detalhes.
