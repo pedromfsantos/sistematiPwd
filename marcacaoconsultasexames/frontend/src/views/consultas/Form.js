@@ -13,7 +13,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 
 function ConsultasForm(props) {
-    const { carregarConsultas, consultaEmEdicao, CnsltSrv, setConsultaEmEdicao, autoCompleteEspecilidades, listaEspecialidade, autoCompleteMedicos, listaMedicos, UsrSrv, listagem} = props;
+    const { carregarConsultas, consultaEmEdicao, CnsltSrv, setConsultaEmEdicao, autoCompleteEspecilidades, listaEspecialidade, autoCompleteMedicos, listaMedicos, UsrSrv, listagem, listagemTotalParaBuscaPorCPF} = props;
 
     const [openEspecialidade, setOpenEspecialidade] = React.useState(false);
     const [openMedico, setOpenMedico] = React.useState(false);
@@ -113,6 +113,7 @@ function ConsultasForm(props) {
   }  
 
   const handleChange = (date) => {
+    console.log(consultaEmEdicao.data_consulta.toString())
     const d = new Date(date)
     console.log(d)
     setConsultaEmEdicao({...consultaEmEdicao,data_consulta:d})
@@ -128,9 +129,17 @@ function ConsultasForm(props) {
       return day === 0 || day === 6;
     }
     else {
-      const data = listagem.map((val, key) => (
-        new Date(val.data_consulta)
-      ))
+      var data = []
+      if(listagemTotalParaBuscaPorCPF.length === 0){
+        data= listagem.map((val, key) => (
+          new Date(val.data_consulta)
+        ))
+      }else {
+        data= listagemTotalParaBuscaPorCPF.map((val, key) => (
+          new Date(val.data_consulta)
+        ))
+      }
+
       var dataIndisponivel = false
       data.forEach((ConsultaDate)=> {
 
@@ -195,6 +204,7 @@ function ConsultasForm(props) {
                      options={optionsEspecialidade}
                      loading={loading}
                     sx={{ width: 300 }}
+                    defaultValue={consultaEmEdicao.especialidadenome}
                     onChange={(e,value) => {
                       onChangeEspecialidade(e,value);
                     }}
@@ -225,6 +235,7 @@ function ConsultasForm(props) {
                      onClose={handleCloseMedico}
                      options={optionsMedico}
                      loading={loading}
+                     defaultValue={consultaEmEdicao.mediconome}
                     sx={{ width: 300 }}
                     onChange={(e,value) => {
                       onChangeMedico(e,value);
@@ -259,6 +270,8 @@ function ConsultasForm(props) {
                               shouldDisableDate={dataJaAgendada} 
                               required={true}
                               onChange={handleChange}
+                              defaultValue={dayjs(consultaEmEdicao.data_consulta.toString().replace('T00:00:00.000Z','T16:00:00.000Z'))}
+                              
                               />
                         </DemoItem>
                     </DemoContainer>

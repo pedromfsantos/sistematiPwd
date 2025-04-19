@@ -36,6 +36,7 @@ function Consultas(){
 
 const [controle, setControle] = useState(0);
 const [listagem, setListagem] = useState([]);
+const [listagemTotalParaBuscaPorCPF, setListagemTotalParaBuscaPorCPF] = useState([]);
 const [consultaEmEdicao, setConsultaEmEdicao] = useState(false);
 
 const [listaEspecialidade, setListaEspecialidades] = useState([]);
@@ -154,6 +155,8 @@ const[cpfPesquisa, setCpfPesquisa] = useState("");
       else {
        const consulta = await CnsltSrv.getPorIdPaciente(user.id)
       setListagem(consulta)
+      const listagemTotal = await CnsltSrv.get();
+      setListagemTotalParaBuscaPorCPF(listagemTotal)
       }
     }               
   }
@@ -184,7 +187,7 @@ return (
         </Typography>
         <ConsultasForm consultaEmEdicao={consultaEmEdicao} carregarConsultas={carregarConsultas} setConsultaEmEdicao={setConsultaEmEdicao}
           autoCompleteEspecilidades={autoCompleteEspecilidades} listaEspecialidade={listaEspecialidade} autoCompleteMedicos={autoCompleteMedicos} listaMedicos={listaMedicos}
-         CnsltSrv={CnsltSrv} UsrSrv={UsrSrv} listagem={listagem}/>
+         CnsltSrv={CnsltSrv} UsrSrv={UsrSrv} listagem={listagem} listagemTotalParaBuscaPorCPF={listagemTotalParaBuscaPorCPF}/>
       </Box>
     </Paper>
   </CardContent>
