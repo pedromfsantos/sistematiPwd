@@ -11,6 +11,8 @@
 - Implementar uma lógica de login, e roles, controlando o que cada usuário pode fazer. Atualmente, qualquer um pode manipular os dados da maneira que bem entender.
   
 - Implementar validação e sanitização dos campos de input. O sistema está vulnerável a ataques como SQL injection e ainda corre o risco de persitir dados não consistentes, como por exemplos números no lugar do nome e letrar no campo do CPF, o que pode acabar prejudicando as consultas ao banco de dados.
+
+- Remover algumas dependencias genéricas e colocar apenas as necessárias. Isso impacta no primeiro build das imagens principalmente do FrontEnd, o deixando bem mais lento.
   
 
 ## 💻 Pré-requisitos
@@ -24,50 +26,32 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 ## 🚀 Realizando setup
 
-- basta ir na pasta /marcacaoconsultasexames e executar o comando ```docker compose watch```
+- Abra o docker desktop, caso esteja usando ele.
+
+- Vá na pasta /marcacaoconsultasexames e executar o comando ```docker compose watch```. Pode demorar alguns minutos.
 
 - Este comando foi utilizado durante o desenvolvimento, e realiza o build das imagens e executa o container com o watch habilitado. Sendo assim qualquer alteração do código é refletida na aplicação.
 
-- É imporntate que este comando seja rodado desta maneira pois os volumes não estão configurados no docker-compose.yml.
+- É importante que este comando seja rodado desta maneira pois os volumes não estão configurados no docker-compose.yml.
 
 ## ☕ Usando
 
-Para usar siga estas etapas:
+- Para utilizar, depois que os containers subirem, basta ir aos endereços:
+   - Frontend : ```localhost:3000```
+   - Backend: ```localhost:5000```
 
-- Execute o projeto no Eclipse. Se a configuração padrão foi utilizado, ele deve estar no endereço local http://localhost:8080
-- A página http://localhost:8080/empregados deve mostrar todos os empregados registrados na base de dados
-- A página http://localhost:8080/empregados/{id} deve mostrar o empregado, selecionado pelo id, por exemplo http://localhost:8080/empregados/1 deve mostrar os dados do funcionário 1, se ele existir, caso contrário uma mensagem informando a não existência do empregado nos registros será fornecida.
-- Utilizando o Postman, ou qualquer outro cliente REST disponível na internet, pode se realizar chamadas:
-  - POST ao endereço http://localhost:8080/empregados: Ao passar como argumento o arquivo JSON no seguinte formato:
-```json
-{
-    "empregado": "Nome",
-    "email": "Nome@gmail.com",
-    "telefone": [{
-                    "telefone":"6188888888"
-                }
-                ],
-    "alergia": [
-                {
-                    "alergia":"amendoim"
-                }
-                ],
-    "problsaude":[
-                {
-                    "problsaude":"tendinite"
-                },
-                {
-                    "problsaude":"rinite"
-                }
-                ]
-}
-```
-
-     - Os campos telefone, alergia e problsaude são listas, portanto, seguindo o mesmo formato, podem variar em número. Poderíamos ter mais um telefone, no exemplo acima, adicionando mais um objeto {"telefone":"1212111"}, por exemplo.
- - PUT no endereço http://localhost:8080/empregados/{id}. Aqui deve-se ter cuidado, uma vez que, do existente registro, não se pode remover nem adicionar valores aos atributos telefone, alergia e problsaude, apenas modificar os que já existem. Se o id não existe, uma mensagem informado isso irá ser retornada.
- - DELETE no endereço http://localhost:8080/empregados/{id}. Basta apenas passar o endereço com o id para o cliente REST. Se o id não existe, uma mensagem informado isso irá ser retornada.
- - GET no endereço http://localhost:8080/empregados/{id}: Irá retornar o empregado, se ele existir.
- - GET no endereço http://localhost:8080/empregados. Irá retornar a lista de todos os empregados que existem.
+- No Backend, tem-se as seguintes rotas disponíveis para o método GET:
+  - ```localhost:5000/usuarios``` : irá mostrar todos os pacientes cadastrados
+  - ```localhost:5000/usuarios/cpf/{cpf}```: irá mostrar o paciente por CPF
+  - ```localhost:5000/usuarios/{id}```: irá mostrar o paciente por id.
+  - ```localhost:5000/especialidades```: irá mostrar todos as especialidades cadastradas
+  - ```localhost:5000/especialidades/{id}```: irá mostrar a especialidade por id
+  - ```localhost:5000/medicos```:irá mostrar todos os medicos cadastrados
+  - ```localhost:5000/medicos/{id}```: irá mostrar o médico por id
+  - ```localhost:5000/medicos/especialidade/{idEspecialidade}```: irá mostrar todos os médicos que tem a especialidade dada pelo id.
+  - ```localhost:5000/consultas```:irá mostrar todos as consultas cadastradas
+  - ```localhost:5000/consultas/paciente/{idPaciente}```:irá mostrar todos as consultas por id de paciente
+  - 
 
 
 
